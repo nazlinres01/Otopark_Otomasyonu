@@ -19,7 +19,7 @@ namespace Otopark_Otomasyonu
         private decimal defaultPrice = 7; // Varsayılan fiyat
         public Form1()
         {
-            InitializeComponent();        
+            InitializeComponent();
             InitializeDateTimeControls();
         }
 
@@ -33,7 +33,7 @@ namespace Otopark_Otomasyonu
             DateTime currentDate = DateTime.Now;
 
             dateTimePicker1.Value = currentDate.Date;
-            txtTime.Text = currentDate.ToString("HH:mm:ss"); 
+            txtTime.Text = currentDate.ToString("HH:mm:ss");
 
         }
 
@@ -159,47 +159,70 @@ namespace Otopark_Otomasyonu
             }
         }
 
-private void btnCalculate_Click(object sender, EventArgs e)
-{
-    string plakaKodu = txtLicensePlate.Text.Trim();
-    decimal birimFiyat = string.IsNullOrEmpty(txtPrice.Text) ? 7 : Convert.ToDecimal(txtPrice.Text);
-    decimal tutar = 0;
-
-    using (SqlConnection baglanti = new SqlConnection(conString))
-    {
-        baglanti.Open();
-
-        if (baglanti.State == System.Data.ConnectionState.Open)
+        private void btnCalculate_Click(object sender, EventArgs e)
         {
-            // Abonelik Kaydı sorgulandı
-            string abonelikSorgu = "SELECT AbonelikTuruID FROM AbonelikKayit_TBL WHERE PlakaNo = @Plaka";
-            SqlCommand abonelikKomut = new SqlCommand(abonelikSorgu, baglanti);
-            abonelikKomut.Parameters.AddWithValue("@Plaka", plakaKodu);
-            int abonelikTuruID = -1; // Varsayılan değer
+            string plakaKodu = txtLicensePlate.Text.Trim();
+            decimal birimFiyat = string.IsNullOrEmpty(txtPrice.Text) ? 7 : Convert.ToDecimal(txtPrice.Text);
+            decimal tutar = 0;
 
-            // Eğer plaka kaydı varsa, Abonelik Turu ID'si alınıyor
-            using (SqlDataReader abonelikOkuyucu = abonelikKomut.ExecuteReader())
+            using (SqlConnection baglanti = new SqlConnection(conString))
             {
-                if (abonelikOkuyucu.Read())
-                {
-                    abonelikTuruID = abonelikOkuyucu.GetInt32(0);
-                }
-            }
+                baglanti.Open();
 
-            if (abonelikTuruID != -1)
-            {
-                // Abonelik Turu mevcut, Abonelik Turu'nun saatlik birim fiyatı alındı
-                string saatlikFiyatSorgu = "SELECT AboneBirimFiyat FROM AbonelikTurleri_TBL WHERE AbonelikTuruID = @TuruID";
-                SqlCommand saatlikFiyatKomut = new SqlCommand(saatlikFiyatSorgu, baglanti);
-                saatlikFiyatKomut.Parameters.AddWithValue("@TuruID", abonelikTuruID);
-
-                // Eğer Abonelik Turu'nun saatlik birim fiyatı mevcutsa, onu al
-                using (SqlDataReader fiyatOkuyucu = saatlikFiyatKomut.ExecuteReader())
+                if (baglanti.State == System.Data.ConnectionState.Open)
                 {
-                    if (fiyatOkuyucu.Read())
+                    // Abonelik Kaydı sorgulandı
+                    string abonelikSorgu = "SELECT AbonelikTuruID FROM AbonelikKayit_TBL WHERE PlakaNo = @Plaka";
+                    SqlCommand abonelikKomut = new SqlCommand(abonelikSorgu, baglanti);
+                    abonelikKomut.Parameters.AddWithValue("@Plaka", plakaKodu);
+                    int abonelikTuruID = -1; // Varsayılan değer
+
+                    // Eğer plaka kaydı varsa, Abonelik Turu ID'si alınıyor
+                    using (SqlDataReader abonelikOkuyucu = abonelikKomut.ExecuteReader())
                     {
-                        decimal aboneBirimFiyat = fiyatOkuyucu.GetDecimal(0);
+                        if (abonelikOkuyucu.Read())
+                        {
+                            abonelikTuruID = abonelikOkuyucu.GetInt32(0);
+                        }
+                    }
 
+                    if (abonelikTuruID != -1)
+                    {
+                        // Abonelik Turu mevcut, Abonelik Turu'nun saatlik birim fiyatı alındı
+                        string saatlikFiyatSorgu = "SELECT AboneBirimFiyat FROM AbonelikTurleri_TBL WHERE AbonelikTuruID = @TuruID";
+                        SqlCommand saatlikFiyatKomut = new SqlCommand(saatlikFiyatSorgu, baglanti);
+                        saatlikFiyatKomut.Parameters.AddWithValue("@TuruID", abonelikTuruID);
+
+                        // Eğer Abonelik Turu'nun saatlik birim fiyatı mevcutsa, onu al
+                        using (SqlDataReader fiyatOkuyucu = saatlikFiyatKomut.ExecuteReader())
+                        {
+                            if (fiyatOkuyucu.Read())
+                            {
+                                decimal aboneBirimFiyat = fiyatOkuyucu.GetDecimal(0);
+
+                                // OtoparkGirisCikis_TBL tablosundan giriş ve çıkış saatleri alınıyor
+                                string saatSorgu = "SELECT GirisSaati, CikisSaati FROM OtoparkGirisCikis_TBL WHERE PlakaNo = @Plaka";
+                                SqlCommand saatKomut = new SqlCommand(saatSorgu, baglanti);
+                                saatKomut.Parameters.AddWithValue("@Plaka", plakaKodu);
+
+                                using (SqlDataReader saatOkuyucu = saatKomut.ExecuteReader())
+                                {
+                                    if (saatOkuyucu.Read())
+                                    {
+                                        TimeSpan girisSaat = saatOkuyucu.GetTimeSpan(0);
+                                        TimeSpan cikisSaat = saatOkuyucu.GetTimeSpan(1);
+
+                                        // Farkı al ve saatlik birim fiyatla çarp
+                                        TimeSpan kalisSuresi = cikisSaat - girisSaat;
+                                        tutar = aboneBirimFiyat * (decimal)kalisSuresi.TotalHours;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    else
+                    {
+                        // Abonelik Turu yoksa, varsayılan saatlik birim fiyatla hesaplandı
                         // OtoparkGirisCikis_TBL tablosundan giriş ve çıkış saatleri alınıyor
                         string saatSorgu = "SELECT GirisSaati, CikisSaati FROM OtoparkGirisCikis_TBL WHERE PlakaNo = @Plaka";
                         SqlCommand saatKomut = new SqlCommand(saatSorgu, baglanti);
@@ -212,40 +235,24 @@ private void btnCalculate_Click(object sender, EventArgs e)
                                 TimeSpan girisSaat = saatOkuyucu.GetTimeSpan(0);
                                 TimeSpan cikisSaat = saatOkuyucu.GetTimeSpan(1);
 
-                                // Farkı al ve saatlik birim fiyatla çarp
                                 TimeSpan kalisSuresi = cikisSaat - girisSaat;
-                                tutar = aboneBirimFiyat * (decimal)kalisSuresi.TotalHours;
+                                tutar = birimFiyat * (decimal)kalisSuresi.TotalHours;
                             }
                         }
                     }
+
+                    // Tutarı "OtoparkGirisCikis_TBL" tablosuna eklemek için SQL UPDATE sorgusu 
+                    string updateTutarSorgu = "UPDATE OtoparkGirisCikis_TBL SET tutar = @Tutar WHERE PlakaNo = @Plaka";
+                    SqlCommand updateTutarKomut = new SqlCommand(updateTutarSorgu, baglanti);
+                    updateTutarKomut.Parameters.AddWithValue("@Tutar", tutar);
+                    updateTutarKomut.Parameters.AddWithValue("@Plaka", plakaKodu);
+                    updateTutarKomut.ExecuteNonQuery();
+
+                    // Tutarı MessageBox ile gösterildi
+                    MessageBox.Show("Toplam Tutar: " + tutar.ToString("0.00") + " TL", "Tutar Hesaplandı", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
             }
-            else
-            {
-                // Abonelik Turu yoksa, varsayılan saatlik birim fiyatla hesaplandı
-                // OtoparkGirisCikis_TBL tablosundan giriş ve çıkış saatleri alınıyor
-                string saatSorgu = "SELECT GirisSaati, CikisSaati FROM OtoparkGirisCikis_TBL WHERE PlakaNo = @Plaka";
-                SqlCommand saatKomut = new SqlCommand(saatSorgu, baglanti);
-                saatKomut.Parameters.AddWithValue("@Plaka", plakaKodu);
-
-                using (SqlDataReader saatOkuyucu = saatKomut.ExecuteReader())
-                {
-                    if (saatOkuyucu.Read())
-                    {
-                        TimeSpan girisSaat = saatOkuyucu.GetTimeSpan(0);
-                        TimeSpan cikisSaat = saatOkuyucu.GetTimeSpan(1);
-
-                        TimeSpan kalisSuresi = cikisSaat - girisSaat;
-                        tutar = birimFiyat * (decimal)kalisSuresi.TotalHours;
-                    }
-                }
-            }
-
-            // Tutarı MessageBox ile gösterildi
-            MessageBox.Show("Toplam Tutar: " + tutar.ToString("0.00") + " TL", "Tutar Hesaplandı", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
-    }
-}
 
 
         private void btnSave_Click(object sender, EventArgs e)
@@ -313,6 +320,11 @@ private void btnCalculate_Click(object sender, EventArgs e)
             }
         }
 
+        private void report1_Click(object sender, EventArgs e)
+        {
+            Form2 form2 = new Form2();
+            form2.Show();
 
+        }
     }
 }

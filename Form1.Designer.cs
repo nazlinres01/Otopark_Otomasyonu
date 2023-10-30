@@ -33,6 +33,8 @@
             this.txtLicensePlate = new System.Windows.Forms.TextBox();
             this.btnEnter = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.txtTime = new System.Windows.Forms.TextBox();
+            this.dateTimePicker1 = new System.Windows.Forms.DateTimePicker();
             this.txtPrice = new System.Windows.Forms.TextBox();
             this.txtCapacity = new System.Windows.Forms.TextBox();
             this.lblPrice = new System.Windows.Forms.Label();
@@ -41,6 +43,8 @@
             this.btnCalculate = new System.Windows.Forms.Button();
             this.lblTime = new System.Windows.Forms.Label();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.dateTimePicker2 = new System.Windows.Forms.DateTimePicker();
+            this.listBox1 = new System.Windows.Forms.ListBox();
             this.P = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.txtLicensePlate2 = new System.Windows.Forms.TextBox();
@@ -53,11 +57,7 @@
             this.txtPhoneNumber = new System.Windows.Forms.TextBox();
             this.txtSurname = new System.Windows.Forms.TextBox();
             this.txtName = new System.Windows.Forms.TextBox();
-            this.reportViewer1 = new Microsoft.Reporting.WinForms.ReportViewer();
-            this.dateTimePicker1 = new System.Windows.Forms.DateTimePicker();
-            this.txtTime = new System.Windows.Forms.TextBox();
-            this.listBox1 = new System.Windows.Forms.ListBox();
-            this.dateTimePicker2 = new System.Windows.Forms.DateTimePicker();
+            this.report1 = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.SuspendLayout();
@@ -118,6 +118,20 @@
             this.groupBox1.TabIndex = 13;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Giriş - Çıkış İşlemleri";
+            // 
+            // txtTime
+            // 
+            this.txtTime.Location = new System.Drawing.Point(127, 93);
+            this.txtTime.Name = "txtTime";
+            this.txtTime.Size = new System.Drawing.Size(100, 20);
+            this.txtTime.TabIndex = 30;
+            // 
+            // dateTimePicker1
+            // 
+            this.dateTimePicker1.Location = new System.Drawing.Point(127, 61);
+            this.dateTimePicker1.Name = "dateTimePicker1";
+            this.dateTimePicker1.Size = new System.Drawing.Size(148, 20);
+            this.dateTimePicker1.TabIndex = 29;
             // 
             // txtPrice
             // 
@@ -202,6 +216,27 @@
             this.groupBox3.TabIndex = 15;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "ABONELİK KAYIT";
+            // 
+            // dateTimePicker2
+            // 
+            this.dateTimePicker2.Location = new System.Drawing.Point(127, 136);
+            this.dateTimePicker2.Name = "dateTimePicker2";
+            this.dateTimePicker2.Size = new System.Drawing.Size(148, 20);
+            this.dateTimePicker2.TabIndex = 30;
+            // 
+            // listBox1
+            // 
+            this.listBox1.FormattingEnabled = true;
+            this.listBox1.Items.AddRange(new object[] {
+            "Normal Abonelik",
+            "Aile Abonelik",
+            "Öğrenci Abonelik",
+            "VIP Abonelik",
+            "Akşam Abonelik"});
+            this.listBox1.Location = new System.Drawing.Point(127, 162);
+            this.listBox1.Name = "listBox1";
+            this.listBox1.Size = new System.Drawing.Size(148, 56);
+            this.listBox1.TabIndex = 28;
             // 
             // P
             // 
@@ -303,53 +338,22 @@
             this.txtName.Size = new System.Drawing.Size(148, 20);
             this.txtName.TabIndex = 0;
             // 
-            // reportViewer1
+            // report1
             // 
-            this.reportViewer1.Location = new System.Drawing.Point(0, 0);
-            this.reportViewer1.Name = "ReportViewer";
-            this.reportViewer1.Size = new System.Drawing.Size(396, 246);
-            this.reportViewer1.TabIndex = 0;
-            // 
-            // dateTimePicker1
-            // 
-            this.dateTimePicker1.Location = new System.Drawing.Point(127, 61);
-            this.dateTimePicker1.Name = "dateTimePicker1";
-            this.dateTimePicker1.Size = new System.Drawing.Size(148, 20);
-            this.dateTimePicker1.TabIndex = 29;
-            // 
-            // txtTime
-            // 
-            this.txtTime.Location = new System.Drawing.Point(127, 93);
-            this.txtTime.Name = "txtTime";
-            this.txtTime.Size = new System.Drawing.Size(100, 20);
-            this.txtTime.TabIndex = 30;
-            // 
-            // listBox1
-            // 
-            this.listBox1.FormattingEnabled = true;
-            this.listBox1.Items.AddRange(new object[] {
-            "Normal Abonelik",
-            "Aile Abonelik",
-            "Öğrenci Abonelik",
-            "VIP Abonelik",
-            "Akşam Abonelik"});
-            this.listBox1.Location = new System.Drawing.Point(127, 162);
-            this.listBox1.Name = "listBox1";
-            this.listBox1.Size = new System.Drawing.Size(148, 56);
-            this.listBox1.TabIndex = 28;
-            // 
-            // dateTimePicker2
-            // 
-            this.dateTimePicker2.Location = new System.Drawing.Point(127, 136);
-            this.dateTimePicker2.Name = "dateTimePicker2";
-            this.dateTimePicker2.Size = new System.Drawing.Size(148, 20);
-            this.dateTimePicker2.TabIndex = 30;
+            this.report1.Location = new System.Drawing.Point(582, 259);
+            this.report1.Name = "report1";
+            this.report1.Size = new System.Drawing.Size(75, 23);
+            this.report1.TabIndex = 16;
+            this.report1.Text = "Rapor 1";
+            this.report1.UseVisualStyleBackColor = true;
+            this.report1.Click += new System.EventHandler(this.report1_Click);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 527);
+            this.Controls.Add(this.report1);
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.groupBox1);
             this.Name = "Form1";
@@ -398,6 +402,7 @@
         private System.Windows.Forms.TextBox txtTime;
         private System.Windows.Forms.DateTimePicker dateTimePicker2;
         private System.Windows.Forms.ListBox listBox1;
+        private System.Windows.Forms.Button report1;
     }
 }
 
