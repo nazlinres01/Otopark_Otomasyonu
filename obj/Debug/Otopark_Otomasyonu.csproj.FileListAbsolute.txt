@@ -333,3 +333,4 @@ C:\Users\Proyaes7345\Documents\GitHub\Otopark_Otomasyonu\Otopark_Otomasyonu\bin\
 C:\Users\Proyaes7345\Documents\GitHub\Otopark_Otomasyonu\Otopark_Otomasyonu\bin\Debug\zh-CHS\Microsoft.ReportViewer.Common.resources.dll
 C:\Users\Proyaes7345\Documents\GitHub\Otopark_Otomasyonu\Otopark_Otomasyonu\bin\Debug\zh-CHT\Microsoft.ReportViewer.Common.resources.dll
 C:\Users\Proyaes7345\Documents\GitHub\Otopark_Otomasyonu\Otopark_Otomasyonu\obj\Debug\Otopark_Otomasyonu.exe.config
+C:\Users\Proyaes7345\Documents\GitHub\Otopark_Otomasyonu\Otopark_Otomasyonu\obj\Debug\Otopark_Otomasyonu.Form3.resources

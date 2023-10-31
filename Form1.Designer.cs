@@ -57,7 +57,8 @@
             this.txtPhoneNumber = new System.Windows.Forms.TextBox();
             this.txtSurname = new System.Windows.Forms.TextBox();
             this.txtName = new System.Windows.Forms.TextBox();
-            this.report1 = new System.Windows.Forms.Button();
+            this.btnReport1 = new System.Windows.Forms.Button();
+            this.btnReport2 = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.SuspendLayout();
@@ -338,22 +339,33 @@
             this.txtName.Size = new System.Drawing.Size(148, 20);
             this.txtName.TabIndex = 0;
             // 
-            // report1
+            // btnReport1
             // 
-            this.report1.Location = new System.Drawing.Point(582, 259);
-            this.report1.Name = "report1";
-            this.report1.Size = new System.Drawing.Size(75, 23);
-            this.report1.TabIndex = 16;
-            this.report1.Text = "Rapor 1";
-            this.report1.UseVisualStyleBackColor = true;
-            this.report1.Click += new System.EventHandler(this.report1_Click);
+            this.btnReport1.Location = new System.Drawing.Point(582, 259);
+            this.btnReport1.Name = "btnReport1";
+            this.btnReport1.Size = new System.Drawing.Size(75, 23);
+            this.btnReport1.TabIndex = 16;
+            this.btnReport1.Text = "Rapor 1";
+            this.btnReport1.UseVisualStyleBackColor = true;
+            this.btnReport1.Click += new System.EventHandler(this.btnReport1_Click);
+            // 
+            // btnReport2
+            // 
+            this.btnReport2.Location = new System.Drawing.Point(582, 288);
+            this.btnReport2.Name = "btnReport2";
+            this.btnReport2.Size = new System.Drawing.Size(75, 23);
+            this.btnReport2.TabIndex = 17;
+            this.btnReport2.Text = "Rapor 2";
+            this.btnReport2.UseVisualStyleBackColor = true;
+            this.btnReport2.Click += new System.EventHandler(this.btnReport2_Click);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 527);
-            this.Controls.Add(this.report1);
+            this.Controls.Add(this.btnReport2);
+            this.Controls.Add(this.btnReport1);
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.groupBox1);
             this.Name = "Form1";
@@ -402,7 +414,8 @@
         private System.Windows.Forms.TextBox txtTime;
         private System.Windows.Forms.DateTimePicker dateTimePicker2;
         private System.Windows.Forms.ListBox listBox1;
-        private System.Windows.Forms.Button report1;
+        private System.Windows.Forms.Button btnReport1;
+        private System.Windows.Forms.Button btnReport2;
     }
 }
 
